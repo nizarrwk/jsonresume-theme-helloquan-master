@@ -1,0 +1,80 @@
+on: [push]
+
+name: Build theme
+
+jobs:
+  build-theme:
+    runs-on: ubuntu-20.04
+    name: Build theme package
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 10
+        uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+
+      - name: Build and package
+        id: build_and_package
+        run: |
+          npm install
+          npm run package
+          echo "::set-output name=asset_name::$(ls -1 jsonresume-theme-hellokhan-*.tgz)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: theme-artifacts
+          path: |
+            ${{ steps.build_and_package.outputs.asset_name }}
+
+      - name: Prepare public directory
+        run: |
+          mkdir public
+          cp test/resume.html public/index.html
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-theme:
+    if: ${{ contains(github.ref, 'refs/tags/') }}
+    needs: build-theme
+    runs-on: ubuntu-20.04
+    name: Release and publish theme
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: theme-artifacts
+
+      - name: Get asset name
+        id: get_asset_name
+        run: |
+          echo "::set-output name=asset_name::$(ls -1 jsonresume-theme-hellokhan-*.tgz)"
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.get_asset_name.outputs.asset_name }}
+          asset_name: ${{ steps.get_asset_name.outputs.asset_name }}
+          asset_content_type: application/zip

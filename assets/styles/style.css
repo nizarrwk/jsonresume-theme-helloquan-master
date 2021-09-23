@@ -1,0 +1,150 @@
+#top {
+    max-width: 1200px;
+}
+
+body {
+    font-size: 14px;
+}
+
+.profile-card-wrapper {
+    position: relative;
+    padding-bottom: 0;
+    padding-right: 10px;
+}
+
+@media (min-width: 992px) {
+    .profile-card-wrapper {
+        position: fixed;
+        height: 100%;
+        padding-right: 0;
+        padding-bottom: 10px;
+        overflow-y: hidden;
+        width: 25%;
+        max-width: 300px;
+    }
+
+    .col-md-8 {
+        width: 75%;
+    }
+
+    .card-wrapper {
+        float: right;
+    }
+
+    .grid-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+    }
+}
+
+.profile-card-wrapper + .card-wrapper {
+    padding-bottom: 0px;
+}
+
+@media (max-width: 767px) {
+    #profile ul.nav > li {
+        float: left;
+    }
+}
+
+.detail {
+    padding: 5px;
+}
+
+.detail h3 {
+    position: static;
+    left: -44px;
+}
+
+.detail-highlights {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.detail-highlights li {
+    padding-left: 1em;
+}
+
+.detail-highlights li:before {
+    content: "\2022";
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    color: #66757f;
+    font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .detail {
+        padding: 10px 10px 10px 50px;
+    }
+
+    .detail h3 {
+        position: relative;
+    }
+}
+
+.detail h3 i {
+    min-width: 40px;
+    min-height: 20px;
+    text-align: center;
+}
+
+.detail-item {
+    padding: 10px 0;
+    margin: 0 3px;
+    border-top: 1px solid #ccd6dd;
+}
+
+.detail-item-content {
+    padding: 0;
+}
+
+@media (min-width: 768px) {
+    .detail-item-content {
+        padding-right: 10px;
+    }
+
+    .detail-item-content.col-sm-9 {
+        border-right: 1px solid #ccd6dd;
+        width: 80%;
+    }
+
+    .detail-item-sidebar.col-sm-3 {
+        width: 20%;
+    }
+}
+
+.detail-highlights li {
+    margin-bottom: 2px;
+}
+
+.detail-highlights p {
+    display: inline;
+}
+
+.label {
+    padding: .4em .6em .4em;
+    color: #444;
+}
+
+.labels {
+    line-height: 2;
+    word-spacing: 2px;
+}
+
+.label-keyword {
+    font-size: 85%;
+    margin-right: 5px;
+    border: 1px #aaa solid;
+}
+
+#skills h4,
+#interests h4 {
+    font-weight: bold;
+}
+
+#references .detail-item {
+    border: none;
+}
